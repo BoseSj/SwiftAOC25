@@ -21,7 +21,7 @@ struct Day01: AdventDay {
 
   func part1() -> Any {
     return PuzzleSolverDay1(directions: directions)
-      .timesPointZero
+      .answer
   }
 
   func part2() -> Any {

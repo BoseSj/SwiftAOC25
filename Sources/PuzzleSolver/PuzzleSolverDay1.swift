@@ -28,7 +28,7 @@ struct PuzzleSolverDay1 {
     return director
   }
 
-  var timesPointZero: Int {
+  var answer: Int {
     director
       .timesPointZero
   }
