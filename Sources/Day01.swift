@@ -101,3 +101,35 @@ print(
         .timesPointZero
 )
 
+
+
+/// LinkedList
+class Node<Model: Equatable> {
+    var id = UUID()
+    
+    let value: Model
+    var next: Node?
+    
+    init(value: Model, next: Node? = nil) {
+        self.value = value
+        self.next = next
+    }
+    
+    func lastNode() -> Node {
+        guard let node = self.next else {
+            return self
+        }
+        
+        return node.lastNode()
+    }
+}
+
+var circularMap: Node = Node(value: 0)
+Array(1...99)
+    .forEach { value in
+        let newNode = Node(value: value)
+        
+        circularMap.lastNode().next = newNode
+    }
+
+print(circularMap.lastNode().value)
