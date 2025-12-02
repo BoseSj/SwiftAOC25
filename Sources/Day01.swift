@@ -18,13 +18,18 @@ struct Day01: AdventDay {
         String($0)
       }
   }
+  
+  private var puzzleSolver: PuzzleSolverDay1 {
+    PuzzleSolverDay1(directions: directions)
+  }
 
   func part1() -> Any {
-    return PuzzleSolverDay1(directions: directions)
-      .answer
+    return puzzleSolver
+      .part1Answer
   }
 
   func part2() -> Any {
-    return 0 // TODO: Yet to be solved
+    return puzzleSolver
+      .part2Answer
   }
 }

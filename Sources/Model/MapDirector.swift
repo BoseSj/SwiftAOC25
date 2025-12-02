@@ -28,22 +28,49 @@ enum MapDirector {
 }
 
 extension Array where Element == MapDirector {
-  var timesPointZero: Int {
-    let mapDirection: Node<Int> = {
-      let node = Node(value: 0)
-      (1...99)
-        .forEach { value in
-          node.addNext(with: value)
+  var timesPointingToZero: Int {
+    let mapDirection: Node<Int> = .mapDirection
+    
+    var tracked = 0
+    let trackingValue = 0
+    var currentPoint = mapDirection.getNode(
+      with            : 50,
+      cancelOnValue   : mapDirection.value
+    ) ?? mapDirection
+    
+    self
+      .forEach { director in
+        let newPoint = switch director {
+          case .left(let value):
+            currentPoint.previousNode(
+              by: value,
+              tracked: &tracked,
+              trackingValue: trackingValue
+            )
+          case .right(let value):
+            currentPoint.nextNode(
+              by: value,
+              tracked: &tracked,
+              trackingValue: trackingValue
+            )
         }
-      
-      return node
-        .generateCircularLL()
-    }()
+        
+        if let newPoint {
+          currentPoint = newPoint
+        }
+      }
+    
+    return tracked
+  }
+  var timesReachedToZero: Int {
+    let mapDirection: Node<Int> = .mapDirection
     
     var result = 0
-    var currentPoint = mapDirection.getNode(with: 50, cancelOnValue: mapDirection.value
+    var currentPoint = mapDirection.getNode(
+      with: 50,
+      cancelOnValue: mapDirection.value
     ) ?? mapDirection
-    print(currentPoint.value)
+    
     self
       .forEach { director in
         let newPoint = switch director {
@@ -54,14 +81,9 @@ extension Array where Element == MapDirector {
         }
         if let newPoint {
           currentPoint = newPoint
-          
-//          print(director)
-//          print(newPoint.value)
-          
           if currentPoint.value == 0 { result += 1}
         }
       }
-    
     
     return result
   }

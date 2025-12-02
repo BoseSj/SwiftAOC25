@@ -8,15 +8,23 @@
 
 import Foundation
 
-struct PuzzleSolverDay1 {
 
-  let directions: [String]
+protocol PuzzleSolver {
+  associatedtype Model = Equatable
+  
+  var part1Answer: Model { get }
+  var part2Answer: Model { get }
+}
+
+struct PuzzleSolverDay1: PuzzleSolver {
+  
+  private let directions: [String]
 
   init(directions: [String]) {
     self.directions = directions
   }
 
-  var director: [MapDirector] {
+  private var director: [MapDirector] {
     var director: [MapDirector] = []
     directions
       .forEach { direction in
@@ -28,8 +36,13 @@ struct PuzzleSolverDay1 {
     return director
   }
 
-  var answer: Int {
+  
+  var part1Answer: Int {
     director
-      .timesPointZero
+      .timesReachedToZero
+  }
+  var part2Answer: Int {
+    director
+      .timesPointingToZero
   }
 }

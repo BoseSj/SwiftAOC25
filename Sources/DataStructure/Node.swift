@@ -38,11 +38,36 @@ class Node<Model: Equatable> {
     return self.next?.getNode(with: value, cancelOnValue: cancelOnValue)
   }
 
+  func nextNode(by steps: Int, tracked: inout Int, trackingValue: Model) -> Node? {
+    guard steps > 0 else { return nil }
+    var node = self
+    for _ in 0..<steps {
+      if node.value == trackingValue { tracked += 1 }
+      if let newNode = node.next {
+        node = newNode
+      }
+    }
+
+    return node
+  }
   func nextNode(by steps: Int) -> Node? {
     guard steps > 0 else { return nil }
     var node = self
     for _ in 0..<steps {
       if let newNode = node.next {
+        node = newNode
+      }
+    }
+
+    return node
+  }
+  
+  func previousNode(by steps: Int, tracked: inout Int, trackingValue: Model) -> Node? {
+    guard steps > 0 else { return nil }
+    var node = self
+    for _ in 0..<steps {
+      if node.value == trackingValue { tracked += 1 }
+      if let newNode = node.previous {
         node = newNode
       }
     }
@@ -72,5 +97,18 @@ class Node<Model: Equatable> {
     lastNode.next = freshNode
 
     return freshNode
+  }
+}
+
+extension Node where Model == Int {
+  static var mapDirection: Node<Int> {
+    let node = Node(value: 0)
+    (1...99)
+      .forEach { value in
+        node.addNext(with: value)
+      }
+    
+    return node
+      .generateCircularLL()
   }
 }
